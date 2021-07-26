@@ -1,16 +1,16 @@
 variable "resource_prefix" {
-  description = "Name to be used on all the resources as identifier"
+  description = "Prefix to be used for naming new resources"
   type        = string
-  default     = "CustomerCloudQuery"
+  default     = "cloudquery"
 }
 
 variable "aws_account_id" {
-  description = "Aws account id of Uptycs"
+  description = "Uptycs AWS account ID"
   type        = string
 }
 
 variable "external_id" {
-  description = "ExternalId to be used for API authentication."
+  description = "Role external ID provided by Uptycs"
   type        = string
 }
 
@@ -20,27 +20,20 @@ variable "cloud_logs_enabled" {
   default     = false
 }
 
-variable "vpc_log_bucket_name" {
+variable "vpc_flowlogs_bucket_name" {
   type        = string
-  description = "Bucket to store vpc flow logs, pass if cloud_logs_enabled is set true."
+  description = "S3 bucket where VPC flow logs are saved. Required if cloud_logs_enabled is set to 'true'"
   default     = ""
 }
 
-variable "cloudtrail_log_bucket_name" {
+variable "cloudtrail_s3_bucket_name" {
   type        = string
-  description = "Bucket to store cloudtrail logs, pass if cloud_logs_enabled is set true."
+  description = "S3 bucket where CloudTrail is saved. Requried if cloud_logs_enabled is set to 'true'"
   default     = ""
 }
 
 variable "tags" {
-  description = "A map of tags to add to all resources"
+  description = "Tags to apply to the resources created by this module"
   type        = map(string)
-  default = {
-    Environment = "Dev"
-    Service     = "CloudQuery"
-  }
+  default = {}
 }
-
-
-
-
