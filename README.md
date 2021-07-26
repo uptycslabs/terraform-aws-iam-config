@@ -5,7 +5,7 @@
 * It will attach below policies to role :-
   * policy/job-function/ViewOnlyAccess
   * policy/SecurityAudit
-  * Custom read only policy access for resource
+  * Custom read only policy access for required resources.
 
 
 # Requirements
@@ -68,8 +68,10 @@
 module "iam-config" {
   source = "github.com/uptycslabs/terraform-aws-iam-config"
     
-  resource_prefix = "< Pass value to identify customer & service >" Ex :- "UptycsCloudQuery"
-  cloud_logs_enabled = false  # Set true if you want use log buckets.
+  resource_prefix = "UptycsCloudQuery"
+  aws_account_id  = "1234567890"
+  external_id     = "f09cd4ae-76f1-4373-88da-de721312803d"
+  cloud_logs_enabled = false
 
   # Pass bucket names if cloud_logs_enabled = true
   vpc_log_bucket_name = ""
@@ -81,12 +83,15 @@ module "iam-config" {
   }
 }
 
-output "instance-profile-arn" {
-  value = module.iam-config.instance_profile_arn
-}
+
 
 output "aws-iam-role-arn" {
   value = module.iam-config.aws_iam_role_arn
+}
+
+output "external_id" {
+  description = "Passed UUID as external id for access config."
+  value = var.external_id
 }
 
 ```
@@ -96,6 +101,8 @@ output "aws-iam-role-arn" {
 | Name                      | Description                                                                                                        | Type          | Default          |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------- | ---------------- |
 | resource_prefix           | Pass value to identify resources customer & service. Ex :- "UptycsCloudQuery"                                      | `string`      | `CustomerCloudQuery`|
+| aws_account_id            | AWS account id where resources need to created.                                                                    | `string`      | `""`             |
+| external_id               | ExternalId to be used for API authentication.                                                                      | `string`      | `""`             |
 | cloud_logs_enabled        | This is set true or false i.e. whether you wants to use log buckets or not .                                       | `bool`        | `false`          |
 | vpc_log_bucket_name       | The VPC Flow Log bucket name .                                                                                     | `string`      | `""`             |
 | cloudtrail_log_bucket_name| The Cloudtrail Log bucket name .                                                                                   | `string`      | `""`             |
@@ -106,8 +113,8 @@ output "aws-iam-role-arn" {
 
 | Name                    | Description                                  |
 | ----------------------- | -------------------------------------------- |
-| instance_profile_arn    | It will return instance profile arn.         |
-| aws_iam_role_arn        | It will return aws IAM role arn.             |
+| external_id             | It will return passed UUID as external id for access config        |
+| aws_iam_role_arn        | It will return aws IAM role arn for access config              |
 
 
 ## 2. Execute Terraform script to get role arn

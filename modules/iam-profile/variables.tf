@@ -4,6 +4,16 @@ variable "resource_prefix" {
   default     = "CustomerCloudQuery"
 }
 
+variable "aws_account_id" {
+  description = "Aws account id of Uptycs"
+  type        = string
+}
+
+variable "external_id" {
+  description = "ExternalId to be used for API authentication."
+  type        = string
+}
+
 variable "cloud_logs_enabled" {
   type        = bool
   description = "Required Whether customer wants attach cloudtrail and VPC buckets for logging."

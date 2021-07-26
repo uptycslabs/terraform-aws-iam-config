@@ -1,27 +1,23 @@
-resource "aws_iam_instance_profile" "instance_profile" {
-  name = "${var.resource_prefix}-cloud-InstanceProfile"
-  role = aws_iam_role.role.name
-
-  tags = var.tags
-}
-
 resource "aws_iam_role" "role" {
   name = "${var.resource_prefix}-cloud-IntegrationRole"
   path = "/"
 
   assume_role_policy = <<EOF
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-               "Service": "ec2.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
-        }
-    ]
+	"Version": "2012-10-17",
+	"Statement": [{
+		"Action": "sts:AssumeRole",
+		"Principal": {
+			"AWS": "${var.aws_account_id}"
+		},
+		"Condition": {
+			"StringEquals": {
+				"sts:ExternalId": "${var.external_id}"
+			}
+		},
+		"Effect": "Allow",
+		"Sid": ""
+	}]
 }
 EOF
 
@@ -47,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "ReadOnlyPolicy_attach" {
 }
 
 resource "aws_iam_policy" "ReadOnlyPolicy" {
-  name        = "${var.resource_prefix}-cloud-ReadOnlyPolicy"
+  name        = "${var.resource_prefix}-ReadOnlyPolicy"
   description = "Given Read Only policy Access to service."
   policy = <<EOF
 {

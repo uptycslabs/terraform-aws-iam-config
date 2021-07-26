@@ -9,11 +9,13 @@ data "aws_s3_bucket" "cloudtrail_log_bucket_arn" {
 }
 
 module "instance_profile" {
-  source             = "./modules/iam-profile"
-  resource_prefix    = var.resource_prefix
-  cloud_logs_enabled = var.cloud_logs_enabled
+  source                    = "./modules/iam-profile"
+  resource_prefix           = var.resource_prefix
+  cloud_logs_enabled        = var.cloud_logs_enabled
+  aws_account_id            = var.aws_account_id
+  external_id               = var.external_id
   cloudtrail_log_bucket_arn = var.cloud_logs_enabled != false ? data.aws_s3_bucket.cloudtrail_log_bucket_arn[0].arn : null
-  vpc_log_bucket_arn = var.cloud_logs_enabled != false ? data.aws_s3_bucket.vpc_log_bucket_arn[0].arn : null
-  tags = var.tags
+  vpc_log_bucket_arn        = var.cloud_logs_enabled != false ? data.aws_s3_bucket.vpc_log_bucket_arn[0].arn : null
+  tags                      = var.tags
 }
 

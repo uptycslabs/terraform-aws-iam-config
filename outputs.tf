@@ -1,11 +1,9 @@
-output "instance_profile_arn" {
-  description = "The deployed instance name"
-  value       = module.instance_profile.instance_profile_arn
-}
-
 output "aws_iam_role_arn" {
   description = "The aws role arn ."
   value       = module.instance_profile.aws_iam_role_arn
 }
 
-
+output "external_id" {
+  description = "Passed UUID as external id for access config."
+  value = var.external_id
+}
