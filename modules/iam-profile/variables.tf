@@ -1,7 +1,7 @@
 variable "resource_prefix" {
   description = "Pass prefix to identify created resources."
   type        = string
-  default     = "CustomerCloudQuery"
+  default     = "cloudquery"
 }
 
 variable "aws_account_id" {
@@ -35,10 +35,7 @@ variable "cloudtrail_log_bucket_arn" {
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
-  default = {
-    Environment = "Dev"
-    Service     = "CloudQuery"
-  }
+  default = {}
 }
 
 

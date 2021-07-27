@@ -1,5 +1,5 @@
 resource "aws_iam_role" "role" {
-  name = "${var.resource_prefix}-cloud-IntegrationRole"
+  name = "${var.resource_prefix}-IntegrationRole"
   path = "/"
 
   assume_role_policy = <<EOF
