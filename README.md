@@ -53,10 +53,21 @@ output "aws-iam-role-arn" {
 | ----------------------- | ---------------- |
 | aws_iam_role_arn        | AWS IAM role ARN |
 
+## 2. Set Region before execute terraform 
+```sh
+export AWS_DEFAULT_REGION="< pass region >"
+```
 
-## 2. Execute Terraform script to get role arn
+## 3. Execute Terraform script to get role arn
 ```sh
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
+
+## Notes:-
+* The user should have `Administrators` role permission to create resources.
+* If the user has multiple aws account profiles then set profile before execute terraform.
+   ```sh
+      export AWS_PROFILE="< profile name >" 
+   ```
