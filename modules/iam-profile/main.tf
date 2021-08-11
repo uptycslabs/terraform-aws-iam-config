@@ -68,7 +68,10 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "sqs:ListQueueTags",
               "codepipeline:ListTagsForResource",
               "codepipeline:GetPipeline",
-              "ds:ListTagsForResource"
+              "ds:ListTagsForResource",
+              "kinesis:GetShardIterator",
+              "kinesis:GetRecords",
+              "kinesis:DescribeStream"
             ],
             "Resource": "*"
         }
