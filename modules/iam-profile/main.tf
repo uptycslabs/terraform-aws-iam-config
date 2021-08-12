@@ -71,7 +71,10 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "ds:ListTagsForResource",
               "kinesis:GetShardIterator",
               "kinesis:GetRecords",
-              "kinesis:DescribeStream"
+              "kinesis:DescribeStream",
+              "servicecatalog:SearchProducts",
+              "servicecatalog:DescribeProduct",
+              "servicecatalog:DescribePortfolio"
             ],
             "Resource": "*"
         }
