@@ -32,8 +32,20 @@ variable "cloudtrail_s3_bucket_name" {
   default     = ""
 }
 
+variable "kinesis_stream_enabled" {
+  description = "Whether customer wants to integrate kinesis data stream for cloudtrail logs. "
+  type        = bool
+  default     = false
+}
+
+variable "kinesis_stream_name" {
+  description = "Kinesis stream name for cloudtrail logs (if kinesis_stream_enabled is set to true)"
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Tags to apply to the resources created by this module"
   type        = map(string)
-  default = {}
+  default     = {}
 }
