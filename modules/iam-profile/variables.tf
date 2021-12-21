@@ -35,9 +35,18 @@ variable "cloudtrail_log_bucket_arn" {
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
-  default = {}
+  default     = {}
 }
 
+variable "kinesis_stream_enabled" {
+  description = "Whether customer wants to integrate kinesis data stream for cloudtrail logs. "
+  type        = bool
+  default     = false
+}
 
-
+variable "kinesis_stream_arn" {
+  description = "ARN for kinesis data stream for cloudtrail logs (if kinesis_stream_enabled is set to true)"
+  type        = string
+  default     = ""
+}
 
