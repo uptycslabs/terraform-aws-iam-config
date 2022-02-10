@@ -114,16 +114,16 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "VpcFlowLogBucketPolicy_attach" {
-  # Only required when cloud logs are enabled
-  count      = var.cloud_logs_enabled ? 1 : 0
+  # Only required when vpc flow logs are enabled
+  count      = var.vpc_flow_logs_enabled ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.VpcFlowLogBucketPolicy[0].arn
 
 }
 
 resource "aws_iam_policy" "VpcFlowLogBucketPolicy" {
-  # Only required when cloud logs are enabled
-  count       = var.cloud_logs_enabled ? 1 : 0
+  # Only required when vpc flow logs are enabled
+  count       = var.vpc_flow_logs_enabled ? 1 : 0
   name        = "${var.resource_prefix}-vpc-flowlog-bucket-policy"
   description = "Vpc Flow Log Bucket Policy "
   policy      = <<EOF

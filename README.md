@@ -18,10 +18,13 @@ module "iam-config" {
   aws_account_id = "1234567890"
   external_id    = "f09cd4ae-76f1-4373-88da-de721312803d"
 
-  # Pass bucket names if cloud_logs_enabled = true
+  # Pass bucket name if cloud_logs_enabled = true
   cloud_logs_enabled        = false
-  vpc_flowlogs_bucket_name  = ""
   cloudtrail_s3_bucket_name = ""
+
+  # Pass bucket name if  vpc_flow_logs_enabled = true
+  vpc_flow_logs_enabled    = false
+  vpc_flowlogs_bucket_name = ""
 
   # Pass kinesis stream name if kinesis_stream_enabled = true
   kinesis_stream_enabled = false
@@ -45,8 +48,9 @@ output "aws-iam-role-arn" {
 | resource_prefix           | Prefix to be used for naming new resources                                                             | `string` | `cloudquery` |
 | aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |
 | external_id               | Role external ID provided by Uptycs                                                                    | `string` | `""`         |
-| cloud_logs_enabled        | This is set true or false i.e. whether you want to use log buckets or not                              | `bool`   | `false`      |
-| vpc_flowlogs_bucket_name  | S3 bucket where VPC flow logs are saved. Required if cloud_logs_enabled is set to 'true'               | `string` | `""`         |
+| cloud_logs_enabled        | This is set true or false i.e. whether you want to use cloud log buckets or not                              | `bool`   | `false`      |
+| vpc_flow_logs_enabled        | This is set true or false i.e. whether you want to use vpc flow log buckets or not                              | `bool`   | `false`      |
+| vpc_flowlogs_bucket_name  | S3 bucket where VPC flow logs are saved. Required if vpc_flow_logs_enabled is set to 'true'               | `string` | `""`         |
 | cloudtrail_s3_bucket_name | S3 bucket where CloudTrail is saved. Requried if cloud_logs_enabled is set to 'true'                   | `string` | `""`         |
 | kinesis_stream_enabled    | This is set true or false i.e. whether you want to use kinesis stream or not                           | `bool`   | `false`      |
 | kinesis_stream_name       | Kinesis stream where CloudTrail logs are streamed. Required if kinesis_stream_enabled is set to 'true' | `string` | `""`         |
