@@ -16,19 +16,19 @@ variable "external_id" {
 
 variable "cloud_logs_enabled" {
   type        = bool
-  description = "Required Whether customer wants attach cloudtrail bucket for logging."
+  description = "Required. Whether customer wants to attach cloudtrail bucket for logging."
   default     = false
 }
 
 variable "vpc_flow_logs_enabled" {
   type        = bool
-  description = "Required Whether customer wants attach VPC bucket for logging."
+  description = "Required. Whether customer wants to attach VPC flow log bucket for logging."
   default     = false
 }
 
 variable "vpc_log_bucket_arn" {
   type        = string
-  description = "The VPC log bucket arn if vpc_flow_logs_enabled is set true."
+  description = "The VPC flow log bucket arn if vpc_flow_logs_enabled is set true."
   default     = ""
 }
 
