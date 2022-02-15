@@ -10,22 +10,24 @@
 
 ```
 module "iam-config" {
-  source = "github.com/uptycslabs/terraform-aws-iam-config"
-
+  source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
   # These two values are provided by Uptycs
   aws_account_id = "1234567890"
   external_id    = "f09cd4ae-76f1-4373-88da-de721312803d"
 
-  # Pass bucket names if cloud_logs_enabled = true
-  cloud_logs_enabled        = false
-  vpc_flowlogs_bucket_name  = ""
+  # Pass bucket or kinesis stream names if cloud_logs_enabled = true
+  cloud_logs_enabled = false
+
+  # Pass bucket name if customer wants to attach bucket for cloudlogs
   cloudtrail_s3_bucket_name = ""
 
-  # Pass kinesis stream name if kinesis_stream_enabled = true
-  kinesis_stream_enabled = false
-  kinesis_stream_name    = ""
+  # Pass kinesis stream name if customer wants to attach kinesis stream for cloudlogs
+  kinesis_stream_name = ""
+
+  # Pass bucket name if customer wants to attach bucket for vpc flow logs
+  vpc_flowlogs_bucket_name = ""
 
   tags = {
     Environment = "dev"
@@ -46,10 +48,9 @@ output "aws-iam-role-arn" {
 | aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |
 | external_id               | Role external ID provided by Uptycs                                                                    | `string` | `""`         |
 | cloud_logs_enabled        | This is set true or false i.e. whether you want to use log buckets or not                              | `bool`   | `false`      |
-| vpc_flowlogs_bucket_name  | S3 bucket where VPC flow logs are saved. Required if cloud_logs_enabled is set to 'true'               | `string` | `""`         |
-| cloudtrail_s3_bucket_name | S3 bucket where CloudTrail is saved. Requried if cloud_logs_enabled is set to 'true'                   | `string` | `""`         |
-| kinesis_stream_enabled    | This is set true or false i.e. whether you want to use kinesis stream or not                           | `bool`   | `false`      |
-| kinesis_stream_name       | Kinesis stream where CloudTrail logs are streamed. Required if kinesis_stream_enabled is set to 'true' | `string` | `""`         |
+| vpc_flowlogs_bucket_name  | S3 bucket where VPC flow logs are saved. Required if cloud_logs_enabled is set to 'true' and you want to use S3 bucket for vpc flow logs               | `string` | `""`         |
+| cloudtrail_s3_bucket_name | S3 bucket where CloudTrail is saved. Requried if cloud_logs_enabled is set to 'true' and you want to use S3 bucket for cloud logs                  | `string` | `""`         |
+| kinesis_stream_name       | Kinesis stream where CloudTrail logs are streamed. Required if cloud_logs_enabled is set to 'true' and you want to use kinesis stream for cloud logs | `string` | `""`         |
 | tags                      | Tags to apply to the resources created by this module                                                  | `map`    | empty        |
 
 ## Outputs

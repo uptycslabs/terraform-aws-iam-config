@@ -16,30 +16,24 @@ variable "external_id" {
 
 variable "cloud_logs_enabled" {
   type        = bool
-  description = "Required Whether customer wants attach cloudtrail and VPC buckets for logging."
+  description = "Required. Whether customer wants to attach cloudtrail or VPC buckets or kinesis data stream for logging."
   default     = false
 }
 
 variable "vpc_flowlogs_bucket_name" {
   type        = string
-  description = "S3 bucket where VPC flow logs are saved. Required if cloud_logs_enabled is set to 'true'"
+  description = "S3 bucket where VPC flow logs are saved. Required. Whether customer wants to attach VPC flow log bucket for logging."
   default     = ""
 }
 
 variable "cloudtrail_s3_bucket_name" {
   type        = string
-  description = "S3 bucket where CloudTrail is saved. Requried if cloud_logs_enabled is set to 'true'"
+  description = "S3 bucket where CloudTrail is saved. Required. Whether customer wants to attach cloudtrail bucket for logging."
   default     = ""
 }
 
-variable "kinesis_stream_enabled" {
-  description = "Whether customer wants to integrate kinesis data stream for cloudtrail logs. "
-  type        = bool
-  default     = false
-}
-
 variable "kinesis_stream_name" {
-  description = "Kinesis stream name for cloudtrail logs (if kinesis_stream_enabled is set to true)"
+  description = "Kinesis stream name for cloudtrail logs. Required. Whether customer wants to attach kinesis stream for logging."
   type        = string
   default     = ""
 }
