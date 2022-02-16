@@ -72,7 +72,20 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "kinesis:DescribeStream",
               "servicecatalog:SearchProducts",
               "servicecatalog:DescribeProduct",
-              "servicecatalog:DescribePortfolio"
+              "servicecatalog:DescribePortfolio",
+              "eks:ListNodegroups",
+              "eks:DescribeFargateProfile",
+              "eks:ListTagsForResource",
+              "eks:ListAddons",
+              "eks:DescribeAddon",
+              "eks:ListFargateProfiles",
+              "eks:DescribeNodegroup",
+              "eks:DescribeIdentityProviderConfig",
+              "eks:ListUpdates",
+              "eks:DescribeUpdate",
+              "eks:ListIdentityProviderConfigs",
+              "servicecatalog:DescribeServiceAction",
+              "servicecatalog:DescribeProvisioningArtifact"
             ],
             "Resource": "*"
         }
