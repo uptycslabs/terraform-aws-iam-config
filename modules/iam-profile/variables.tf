@@ -14,21 +14,15 @@ variable "external_id" {
   type        = string
 }
 
-variable "cloud_logs_enabled" {
-  type        = bool
-  description = "Required. Whether customer wants to attach cloudtrail or VPC buckets or kinesis data stream for logging."
-  default     = false
-}
-
 variable "vpc_log_bucket_arn" {
   type        = string
-  description = "The VPC log bucket arn if cloud_logs_enabled is set true and the customer specify the name of vpc flow log bucket"
+  description = "The VPC log bucket arn (if the customer specify the name of vpc flow log bucket)"
   default     = ""
 }
 
 variable "cloudtrail_log_bucket_arn" {
   type        = string
-  description = "The cloudtrail log bucket arn if cloud_logs_enabled is set true and customer specify the name of cloudtrail log bucket"
+  description = "The cloudtrail log bucket arn (if the customer specify the name of cloudtrail log bucket)"
   default     = ""
 }
 
@@ -39,7 +33,7 @@ variable "tags" {
 }
 
 variable "kinesis_stream_arn" {
-  description = "ARN for kinesis data stream for cloudtrail logs (if cloud_logs_enabled is set true and customer specify the name of kinesis stream)"
+  description = "ARN for kinesis data stream for cloudtrail logs (if the customer specify the name of kinesis stream)"
   type        = string
   default     = ""
 }

@@ -85,7 +85,7 @@ EOF
 
 
 resource "aws_iam_role_policy_attachment" "cloudtrail_bucket_policy_attach" {
-  # Only required when cloud logs are enabled and specify the name of cloudtrail bucket
+  # Only required when customer wants to  attach the bucket for cloudtrail logs
   count      = var.cloudtrail_log_bucket_arn != null ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.cloud_trail_bucketPolicy[0].arn
@@ -93,7 +93,7 @@ resource "aws_iam_role_policy_attachment" "cloudtrail_bucket_policy_attach" {
 }
 
 resource "aws_iam_policy" "cloud_trail_bucketPolicy" {
-  # Only required when cloud logs are enabled and specify the name of cloudtrail bucket
+  #  Only required when customer wants to  attach the bucket for cloudtrail logs
   count       = var.cloudtrail_log_bucket_arn != null ? 1 : 0
   name        = "${var.resource_prefix}-cloudtrail-bucket-policy"
   description = "Cloudtrail Bucket Policy "
@@ -114,7 +114,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "VpcFlowLogBucketPolicy_attach" {
-  # Only required when cloud logs are enabled and specify the name of vpc flow log bucket
+  # Only required when customer wants to  attach the bucket for vpc flow logs
   count      = var.vpc_log_bucket_arn != null ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.VpcFlowLogBucketPolicy[0].arn
@@ -122,7 +122,7 @@ resource "aws_iam_role_policy_attachment" "VpcFlowLogBucketPolicy_attach" {
 }
 
 resource "aws_iam_policy" "VpcFlowLogBucketPolicy" {
-  # Only required when cloud logs are enabled and specify the name of vpc flow log bucket
+  # Only required when customer wants to  attach the bucket for vpc flow logs
   count       = var.vpc_log_bucket_arn != null ? 1 : 0
   name        = "${var.resource_prefix}-vpc-flowlog-bucket-policy"
   description = "Vpc Flow Log Bucket Policy "
@@ -143,7 +143,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "kinesis_stream_policy_attach" {
-  # Only required when kinesis stream for cloudtrail logs is enabled
+  # Only required when customer wants to  attach the kinesis stream for cloudtrail logs
   count      = var.kinesis_stream_arn != null ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.kinesis_stream_policy[0].arn
@@ -151,7 +151,7 @@ resource "aws_iam_role_policy_attachment" "kinesis_stream_policy_attach" {
 }
 
 resource "aws_iam_policy" "kinesis_stream_policy" {
-  # Only required when kinesis stream for cloudtrail logs is enabled
+  # Only required when customer wants to  attach the kinesis stream for cloudtrail logs
   count       = var.kinesis_stream_arn != null ? 1 : 0
   name        = "${var.resource_prefix}-kinesis-stream-policy"
   description = "Kinesis Stream Policy "
