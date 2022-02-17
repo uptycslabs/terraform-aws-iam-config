@@ -17,15 +17,15 @@ module "iam-config" {
   aws_account_id = "1234567890"
   external_id    = "f09cd4ae-76f1-4373-88da-de721312803d"
 
-  # Choose one option between cloudtrail bucket and kinesis stream for cloud logs
+  # Choose S3 bucket or Kinesis stream option to ingest CloudTrail
 
-  # Pass bucket name if customer wants to attach bucket for cloudlogs
+  # Provide the S3 bucket name which contains the CloudTrail data
   cloudtrail_s3_bucket_name = ""
 
-  # Pass kinesis stream name if customer wants to attach kinesis stream for cloudlogs
+  # Name of the Kinesis stream configured to stream CloudTrail data
   kinesis_stream_name = ""
 
-  # Pass bucket name if customer wants to attach bucket for vpc flow logs
+  # Name of the S3 bucket that contains the VPC flow logs
   vpc_flowlogs_bucket_name = ""
 
   tags = {
@@ -46,9 +46,9 @@ output "aws-iam-role-arn" {
 | resource_prefix           | Prefix to be used for naming new resources                                                             | `string` | `cloudquery` |
 | aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |
 | external_id               | Role external ID provided by Uptycs                                                                    | `string` | `""`         |
-| vpc_flowlogs_bucket_name  | S3 bucket where VPC flow logs are saved. Required, if you want to use S3 bucket for vpc flow logs               | `string` | `""`         |
-| cloudtrail_s3_bucket_name | S3 bucket where CloudTrail is saved. Requried, if you want to use S3 bucket for cloud logs                  | `string` | `""`         |
-| kinesis_stream_name       | Kinesis stream where CloudTrail logs are streamed. Required, if you want to use kinesis stream for cloud logs | `string` | `""`         |
+| vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` | `""`         |
+| cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` | `""`         |
+| kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` | `""`         |
 | tags                      | Tags to apply to the resources created by this module                                                  | `map`    | empty        |
 
 ## Outputs
@@ -78,4 +78,4 @@ $ terraform apply
   ```sh
     export AWS_PROFILE="< profile name >"
   ```
- - In file.tf file, choose one option between cloudtrail bucket and kinesis stream for cloudlog monitoring . Give priority to kinesis stream
+- In file.tf file, specify CloudTrail S3 bucket name or Kinesis stream name. Kinesis stream based approach provides faster CloudTrail data ingestion
