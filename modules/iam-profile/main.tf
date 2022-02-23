@@ -52,27 +52,56 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
         {
             "Effect": "Allow",
             "Action": [
-              "logs:FilterLogEvents",
-              "es:ListTags",
-              "elasticache:ListTagsForResource",
               "apigateway:GET",
-              "secretsmanager:DescribeSecret",
-              "eks:ListClusters",
+              "codecommit:GetCommit",
+              "codecommit:GetRepository",
+              "codecommit:GetBranch",
+              "codepipeline:ListTagsForResource",
+              "codepipeline:GetPipeline",
+              "ds:ListTagsForResource",
+              "eks:ListNodegroups",
+              "eks:DescribeFargateProfile",
+              "eks:ListTagsForResource",
+              "eks:ListAddons",
+              "eks:DescribeAddon",
+              "eks:ListFargateProfiles",
+              "eks:DescribeNodegroup",
+              "eks:DescribeIdentityProviderConfig",
+              "eks:ListUpdates",
+              "eks:DescribeUpdate",
               "eks:DescribeCluster",
+              "eks:ListClusters",
+              "eks:ListIdentityProviderConfigs",
+              "elasticache:ListTagsForResource",
+              "es:ListTags",
+              "glacier:GetDataRetrievalPolicy",
+              "glacier:ListJobs",
+              "glacier:GetVaultAccessPolicy",
+              "glacier:ListTagsForVault",
+              "glacier:DescribeVault",
+              "glacier:GetJobOutput",
+              "glacier:GetVaultLock",
+              "glacier:ListVaults",
+              "glacier:GetVaultNotifications",
+              "glacier:DescribeJob",
+              "kinesis:DescribeStream",
+              "logs:FilterLogEvents",
+              "ram:ListResources",
+              "ram:GetResourceShares",
+              "secretsmanager:DescribeSecret",
+              "servicecatalog:SearchProductsAsAdmin",
+              "servicecatalog:DescribeProductAsAdmin",
+              "servicecatalog:DescribePortfolio",
+              "servicecatalog:DescribeServiceAction",
+              "servicecatalog:DescribeProvisioningArtifact",
               "sns:ListTagsForResource",
               "sns:ListSubscriptionsByTopic",
               "sns:GetTopicAttributes",
               "sns:ListTopics",
+              "sns:GetSubscriptionAttributes",
               "sqs:ListQueues",
               "sqs:GetQueueAttributes",
-              "sqs:ListQueueTags",
-              "codepipeline:ListTagsForResource",
-              "codepipeline:GetPipeline",
-              "ds:ListTagsForResource",
-              "kinesis:DescribeStream",
-              "servicecatalog:SearchProducts",
-              "servicecatalog:DescribeProduct",
-              "servicecatalog:DescribePortfolio"
+              "sqs:ListQueueTags"
             ],
             "Resource": "*"
         }
@@ -85,16 +114,16 @@ EOF
 
 
 resource "aws_iam_role_policy_attachment" "cloudtrail_bucket_policy_attach" {
-  # Only required when cloud logs are enabled
-  count      = var.cloud_logs_enabled ? 1 : 0
+  # Only required when customer wants to  attach the bucket for cloudtrail logs
+  count      = var.cloudtrail_log_bucket_arn != null ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.cloud_trail_bucketPolicy[0].arn
 
 }
 
 resource "aws_iam_policy" "cloud_trail_bucketPolicy" {
-  # Only required when cloud logs are enabled
-  count       = var.cloud_logs_enabled ? 1 : 0
+  #  Only required when customer wants to  attach the bucket for cloudtrail logs
+  count       = var.cloudtrail_log_bucket_arn != null ? 1 : 0
   name        = "${var.resource_prefix}-cloudtrail-bucket-policy"
   description = "Cloudtrail Bucket Policy "
   policy      = <<EOF
@@ -114,16 +143,16 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "VpcFlowLogBucketPolicy_attach" {
-  # Only required when cloud logs are enabled
-  count      = var.cloud_logs_enabled ? 1 : 0
+  # Only required when customer wants to  attach the bucket for vpc flow logs
+  count      = var.vpc_log_bucket_arn != null ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.VpcFlowLogBucketPolicy[0].arn
 
 }
 
 resource "aws_iam_policy" "VpcFlowLogBucketPolicy" {
-  # Only required when cloud logs are enabled
-  count       = var.cloud_logs_enabled ? 1 : 0
+  # Only required when customer wants to  attach the bucket for vpc flow logs
+  count       = var.vpc_log_bucket_arn != null ? 1 : 0
   name        = "${var.resource_prefix}-vpc-flowlog-bucket-policy"
   description = "Vpc Flow Log Bucket Policy "
   policy      = <<EOF
@@ -143,16 +172,16 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "kinesis_stream_policy_attach" {
-  # Only required when kinesis stream for cloudtrail logs is enabled
-  count      = var.kinesis_stream_enabled ? 1 : 0
+  # Only required when customer wants to  attach the kinesis stream for cloudtrail logs
+  count      = var.kinesis_stream_arn != null ? 1 : 0
   role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.kinesis_stream_policy[0].arn
 
 }
 
 resource "aws_iam_policy" "kinesis_stream_policy" {
-  # Only required when kinesis stream for cloudtrail logs is enabled
-  count       = var.kinesis_stream_enabled ? 1 : 0
+  # Only required when customer wants to  attach the kinesis stream for cloudtrail logs
+  count       = var.kinesis_stream_arn != null ? 1 : 0
   name        = "${var.resource_prefix}-kinesis-stream-policy"
   description = "Kinesis Stream Policy "
   policy      = <<EOF

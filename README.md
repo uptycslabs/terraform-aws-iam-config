@@ -10,22 +10,23 @@
 
 ```
 module "iam-config" {
-  source = "github.com/uptycslabs/terraform-aws-iam-config"
-
+  source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
   # These two values are provided by Uptycs
   aws_account_id = "1234567890"
   external_id    = "f09cd4ae-76f1-4373-88da-de721312803d"
 
-  # Pass bucket names if cloud_logs_enabled = true
-  cloud_logs_enabled        = false
-  vpc_flowlogs_bucket_name  = ""
+  # Choose S3 bucket or Kinesis stream option to ingest CloudTrail
+
+  # Provide the S3 bucket name which contains the CloudTrail data
   cloudtrail_s3_bucket_name = ""
 
-  # Pass kinesis stream name if kinesis_stream_enabled = true
-  kinesis_stream_enabled = false
-  kinesis_stream_name    = ""
+  # Name of the Kinesis stream configured to stream CloudTrail data
+  kinesis_stream_name = ""
+
+  # Name of the S3 bucket that contains the VPC flow logs
+  vpc_flowlogs_bucket_name = ""
 
   tags = {
     Environment = "dev"
@@ -45,11 +46,9 @@ output "aws-iam-role-arn" {
 | resource_prefix           | Prefix to be used for naming new resources                                                             | `string` | `cloudquery` |
 | aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |
 | external_id               | Role external ID provided by Uptycs                                                                    | `string` | `""`         |
-| cloud_logs_enabled        | This is set true or false i.e. whether you want to use log buckets or not                              | `bool`   | `false`      |
-| vpc_flowlogs_bucket_name  | S3 bucket where VPC flow logs are saved. Required if cloud_logs_enabled is set to 'true'               | `string` | `""`         |
-| cloudtrail_s3_bucket_name | S3 bucket where CloudTrail is saved. Requried if cloud_logs_enabled is set to 'true'                   | `string` | `""`         |
-| kinesis_stream_enabled    | This is set true or false i.e. whether you want to use kinesis stream or not                           | `bool`   | `false`      |
-| kinesis_stream_name       | Kinesis stream where CloudTrail logs are streamed. Required if kinesis_stream_enabled is set to 'true' | `string` | `""`         |
+| vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` | `""`         |
+| cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` | `""`         |
+| kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` | `""`         |
 | tags                      | Tags to apply to the resources created by this module                                                  | `map`    | empty        |
 
 ## Outputs
@@ -77,5 +76,6 @@ $ terraform apply
 - The user should have `Administrators` role permission to create resources.
 - If the user has multiple aws account profiles then set profile before execute terraform.
   ```sh
-     export AWS_PROFILE="< profile name >"
+    export AWS_PROFILE="< profile name >"
   ```
+- In file.tf file, specify CloudTrail S3 bucket name or Kinesis stream name. Kinesis stream based approach provides faster CloudTrail data ingestion
