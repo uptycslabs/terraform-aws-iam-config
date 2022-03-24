@@ -13,12 +13,13 @@ module "iam-config" {
   source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
-  # These two values are provided by Uptycs
   # Copy the AWS Account ID from Uptycs' UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
   aws_account_id = "<Uptycs-AWS-ACCOUNT-ID>"
-  # Copy the actual values from Uptycs' AWS Integration screen
-  # You can generate your own UUID. Make sure Uptycs' UI is updated with same value
+
+  # Copy the UUID4 from Uptycs' UI
+  # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
+  # You can generate your own UUID. If yod do, make sure Uptycs' UI is updated with it
   external_id    = "<UUID4>"
 
   # CloudTrail source: S3 Bucket or Kinesis stream?
@@ -46,8 +47,8 @@ output "aws-iam-role-arn" {
 | Name                      | Description                                                                                            | Type     | Required | Default      |
 | ------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | -------- | ------------ |
 | resource_prefix           | Prefix to be used for naming new resources                                                             | `string` |          | `cloudquery` |
-| aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | Yes      |              |
-| external_id               | Role external ID provided by Uptycs                                                                    | `string` | Yes      |              |
+| aws_account_id            | Uptycs AWS account ID. Copy the AWS Account ID from Uptycs' UI                                         | `string` | Yes      |              |
+| external_id               | Role external ID provided by Uptycs. Copy the UUID ID from Uptycs' UI                                  | `string` | Yes      |              |
 | vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` |          | Blank        |
 | cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` |          | Blank        |
 | kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` |          | Blank        |
