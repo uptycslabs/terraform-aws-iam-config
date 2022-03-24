@@ -13,15 +13,19 @@ module "iam-config" {
   source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
-  # These two values are provided by Uptycs
-  aws_account_id = "1234567890"
-  external_id    = "f09cd4ae-76f1-4373-88da-de721312803d"
+  # Copy the AWS Account ID from Uptycs' UI
+  # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
+  aws_account_id = "<Uptycs-AWS-ACCOUNT-ID>"
 
-  # Choose S3 bucket or Kinesis stream option to ingest CloudTrail
+  # Copy the UUID4 from Uptycs' UI
+  # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
+  # You can generate your own UUID. If you do, make sure Uptycs' UI is updated with it
+  external_id    = "<UUID4>"
 
+  # CloudTrail source: S3 Bucket or Kinesis stream?
+  # Set either `cloudtrail_s3_bucket_name` or `kinesis_stream_name` to allow Uptycs to ingest CloudTrail events
   # Provide the S3 bucket name which contains the CloudTrail data
   cloudtrail_s3_bucket_name = ""
-
   # Name of the Kinesis stream configured to stream CloudTrail data
   kinesis_stream_name = ""
 
@@ -29,7 +33,6 @@ module "iam-config" {
   vpc_flowlogs_bucket_name = ""
 
   tags = {
-    Environment = "dev"
     Service     = "cloudquery"
   }
 }
@@ -41,15 +44,15 @@ output "aws-iam-role-arn" {
 
 ## Inputs
 
-| Name                      | Description                                                                                            | Type     | Default      |
-| ------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | ------------ |
-| resource_prefix           | Prefix to be used for naming new resources                                                             | `string` | `cloudquery` |
-| aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |
-| external_id               | Role external ID provided by Uptycs                                                                    | `string` | `""`         |
-| vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` | `""`         |
-| cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` | `""`         |
-| kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` | `""`         |
-| tags                      | Tags to apply to the resources created by this module                                                  | `map`    | empty        |
+| Name                      | Description                                                                                            | Type     | Required | Default      |
+| ------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | -------- | ------------ |
+| resource_prefix           | Prefix to be used for naming new resources                                                             | `string` |          | `cloudquery` |
+| aws_account_id            | Uptycs AWS account ID. Copy the AWS Account ID from Uptycs' UI                                         | `string` | Yes      |              |
+| external_id               | Role external ID provided by Uptycs. Copy the UUID ID from Uptycs' UI                                  | `string` | Yes      |              |
+| vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` |          | Blank        |
+| cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` |          | Blank        |
+| kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` |          | Blank        |
+| tags                      | Tags to apply to the resources created by this module                                                  | `map`    |          | `{}`         |
 
 ## Outputs
 
@@ -60,7 +63,7 @@ output "aws-iam-role-arn" {
 ## 2. Set Region before execute terraform
 
 ```sh
-export AWS_DEFAULT_REGION="< pass region >"
+export AWS_DEFAULT_REGION="<region-code>"
 ```
 
 ## 3. Execute Terraform script to get role arn
