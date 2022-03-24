@@ -14,7 +14,7 @@ module "iam-config" {
   resource_prefix = "cloudquery"
 
   # These two values are provided by Uptycs
-  # Copy the AWS Account IF from Uptycs' UI
+  # Copy the AWS Account ID from Uptycs' UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
   aws_account_id = "<Uptycs-AWS-ACCOUNT-ID>"
   # Copy the actual values from Uptycs' AWS Integration screen
@@ -51,7 +51,7 @@ output "aws-iam-role-arn" {
 | vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` |          | Blank        |
 | cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` |          | Blank        |
 | kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` |          | Blank        |
-| tags                      | Tags to apply to the resources created by this module                                                  | `map`    |          | `{Service = "cloudquery"}`|
+| tags                      | Tags to apply to the resources created by this module                                                  | `map`    |          | `{}`         |
 
 ## Outputs
 
