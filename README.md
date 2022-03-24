@@ -19,7 +19,7 @@ module "iam-config" {
 
   # Copy the UUID4 from Uptycs' UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
-  # You can generate your own UUID. If yod do, make sure Uptycs' UI is updated with it
+  # You can generate your own UUID. If you do, make sure Uptycs' UI is updated with it
   external_id    = "<UUID4>"
 
   # CloudTrail source: S3 Bucket or Kinesis stream?
