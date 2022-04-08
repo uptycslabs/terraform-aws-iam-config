@@ -101,7 +101,8 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "sns:GetSubscriptionAttributes",
               "sqs:ListQueues",
               "sqs:GetQueueAttributes",
-              "sqs:ListQueueTags"
+              "sqs:ListQueueTags",
+              "ssm:ListCommandInvocations"
             ],
             "Resource": "*"
         }
