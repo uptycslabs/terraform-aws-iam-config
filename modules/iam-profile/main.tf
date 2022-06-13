@@ -1,5 +1,6 @@
 resource "aws_iam_role" "role" {
-  name = "${var.resource_prefix}-IntegrationRole"
+  #provider = aws.orgrole
+  name = "${var.child_account_id}-uptycs-samp-IntegrationRole"
   path = "/"
 
   assume_role_policy = <<EOF
@@ -25,25 +26,29 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "viewaccesspolicy_attach" {
+  #provider = aws.orgrole
   policy_arn = "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"
   role       = aws_iam_role.role.name
 
 }
 
 resource "aws_iam_role_policy_attachment" "securityauditpolicy_attach" {
+  #provider = aws.orgrole
   policy_arn = "arn:aws:iam::aws:policy/SecurityAudit"
   role       = aws_iam_role.role.name
 
 }
 
 resource "aws_iam_role_policy_attachment" "ReadOnlyPolicy_attach" {
+  #provider = aws.orgrole
   policy_arn = aws_iam_policy.ReadOnlyPolicy.arn
   role       = aws_iam_role.role.name
 
 }
 
 resource "aws_iam_policy" "ReadOnlyPolicy" {
-  name        = "${var.resource_prefix}-ReadOnlyPolicy"
+  #provider = aws.orgrole
+  name        = "${var.child_account_id}-uptycs-samp-ReadOnlyPolicy"
   description = "Given Read Only policy Access to service."
   policy      = <<EOF
 {
@@ -104,97 +109,6 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "sqs:ListQueueTags"
             ],
             "Resource": "*"
-        }
-    ]
-}
-EOF
-
-  tags = var.tags
-}
-
-
-resource "aws_iam_role_policy_attachment" "cloudtrail_bucket_policy_attach" {
-  # Only required when customer wants to  attach the bucket for cloudtrail logs
-  count      = var.cloudtrail_log_bucket_arn != null ? 1 : 0
-  role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.cloud_trail_bucketPolicy[0].arn
-
-}
-
-resource "aws_iam_policy" "cloud_trail_bucketPolicy" {
-  #  Only required when customer wants to  attach the bucket for cloudtrail logs
-  count       = var.cloudtrail_log_bucket_arn != null ? 1 : 0
-  name        = "${var.resource_prefix}-cloudtrail-bucket-policy"
-  description = "Cloudtrail Bucket Policy "
-  policy      = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [ "s3:GetObject" ],
-            "Resource": [ "${var.cloudtrail_log_bucket_arn}/*" ]
-        }
-    ]
-}
-EOF
-
-  tags = var.tags
-}
-
-resource "aws_iam_role_policy_attachment" "VpcFlowLogBucketPolicy_attach" {
-  # Only required when customer wants to  attach the bucket for vpc flow logs
-  count      = var.vpc_log_bucket_arn != null ? 1 : 0
-  role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.VpcFlowLogBucketPolicy[0].arn
-
-}
-
-resource "aws_iam_policy" "VpcFlowLogBucketPolicy" {
-  # Only required when customer wants to  attach the bucket for vpc flow logs
-  count       = var.vpc_log_bucket_arn != null ? 1 : 0
-  name        = "${var.resource_prefix}-vpc-flowlog-bucket-policy"
-  description = "Vpc Flow Log Bucket Policy "
-  policy      = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [ "s3:GetObject" ],
-            "Resource": [ "${var.vpc_log_bucket_arn}/*" ]
-        }
-    ]
-}
-EOF
-
-  tags = var.tags
-}
-
-resource "aws_iam_role_policy_attachment" "kinesis_stream_policy_attach" {
-  # Only required when customer wants to  attach the kinesis stream for cloudtrail logs
-  count      = var.kinesis_stream_arn != null ? 1 : 0
-  role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.kinesis_stream_policy[0].arn
-
-}
-
-resource "aws_iam_policy" "kinesis_stream_policy" {
-  # Only required when customer wants to  attach the kinesis stream for cloudtrail logs
-  count       = var.kinesis_stream_arn != null ? 1 : 0
-  name        = "${var.resource_prefix}-kinesis-stream-policy"
-  description = "Kinesis Stream Policy "
-  policy      = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [ 
-              "kinesis:GetShardIterator", 
-              "kinesis:GetRecords"
-            ],
-            "Resource": [ "${var.kinesis_stream_arn}" ]
         }
     ]
 }

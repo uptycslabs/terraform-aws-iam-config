@@ -1,7 +1,7 @@
 # Terraform AWS IAM role module
 
-- This module allows you to create AWS IAM role with required policies and return role ARN which can be used for Uptycs service integration.
-- This terraform module will create a IAM Role with the following policies attached:
+- This module allows you to create AWS IAM role with required policies and return role ARN which can be used for Uptycs service integration for each account in an organization.
+- This terraform module will create a IAM Role in each account with the following policies attached:
   - policy/job-function/ViewOnlyAccess
   - policy/SecurityAudit
   - Custom read only policy access for required resources
@@ -9,34 +9,74 @@
 ## Create a <file.tf> file, paste below codes and modify as needed.
 
 ```
-module "iam-config" {
-  source          = "github.com/uptycslabs/terraform-aws-iam-config"
-  resource_prefix = "cloudquery"
+# fetch all the accounts in an organization
+data "aws_organizations_organization" "listaccounts" {}
 
-  # These two values are provided by Uptycs
-  aws_account_id = "1234567890"
-  external_id    = "f09cd4ae-76f1-4373-88da-de721312803d"
+# Creating provider for each account
+resource "local_file" "providers" {
+ filename = "<directory>/providers.tf"
+ content = <<EOT
+  %{ for ac in data.aws_organizations_organization.listaccounts.non_master_accounts ~}
+  %{ if ac.status == "ACTIVE" ~}
 
-  # Choose S3 bucket or Kinesis stream option to ingest CloudTrail
+provider "aws" {
+  assume_role {
+    // Assume the organization access role
+    role_arn = "arn:aws:iam::${ac.id}:role/OrganizationAccountAccessRole"
+  }
+  alias = "<prefix>-${ac.id}"
+}
+%{ endif ~}
+%{ endfor ~}
+EOT
+}
 
-  # Provide the S3 bucket name which contains the CloudTrail data
-  cloudtrail_s3_bucket_name = ""
+# creating module for each account
+resource "local_file" "modules" {
+  filename = "<directory>/modules.tf"
+  content = <<EOT
+  %{ for ac in data.aws_organizations_organization.listaccounts.non_master_accounts ~}
+  %{ if ac.status == "ACTIVE" ~}
 
-  # Name of the Kinesis stream configured to stream CloudTrail data
-  kinesis_stream_name = ""
+module "iam-config-${ac.id}" {
+  source             = "/home/llukalapu/terraformorg/terraform-aws-iam-config"
+  providers = {
+    aws = aws.<prefix>-${ac.id}
+  }
+  child_account_id = "${ac.id}"
+  child_account_name = "${ac.name}"
 
-  # Name of the S3 bucket that contains the VPC flow logs
-  vpc_flowlogs_bucket_name = ""
+  # Copy the AWS Account ID from Uptycs' UI
+  # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
+  aws_account_id = "<uptycs-accountid>"
+  
+  # uuid will be generated based on the prefix you give
+  external_id = uuidv5("oid", "uptycs-${ac.id}")
 
   tags = {
-    Environment = "dev"
-    Service     = "cloudquery"
+    Service = "cloudquery"
   }
 }
+%{ endif ~}
+%{ endfor ~}
+EOT
 
-output "aws-iam-role-arn" {
-  value = module.iam-config.aws_iam_role_arn
 }
+
+resource "local_file" "outputs" {
+  filename = "<directory>/outputs.tf"
+  content = <<EOT
+  %{ for ac in data.aws_organizations_organization.listaccounts.non_master_accounts ~}
+  %{ if ac.status == "ACTIVE" ~}
+
+output "aws-iam-role-arn-${ac.id}" {
+  value = module.iam-config-${ac.id}.aws_iam_role_arn
+}
+%{ endif ~}
+%{ endfor ~}
+EOT
+}
+
 ```
 
 ## Inputs
@@ -44,18 +84,14 @@ output "aws-iam-role-arn" {
 | Name                      | Description                                                                                            | Type     | Default      |
 | ------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | ------------ |
 | resource_prefix           | Prefix to be used for naming new resources                                                             | `string` | `cloudquery` |
-| aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |
-| external_id               | Role external ID provided by Uptycs                                                                    | `string` | `""`         |
-| vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                                                  | `string` | `""`         |
-| cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data                                               | `string` | `""`         |
-| kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data                                        | `string` | `""`         |
+| aws_account_id            | Uptycs AWS account ID                                                                                  | `string` | `""`         |                                                              | `string` | `""`         |
 | tags                      | Tags to apply to the resources created by this module                                                  | `map`    | empty        |
 
 ## Outputs
 
 | Name             | Description      |
 | ---------------- | ---------------- |
-| aws_iam_role_arn | AWS IAM role ARN |
+| aws_iam_role_arn | AWS IAM role ARN and externalId|
 
 ## 2. Set Region before execute terraform
 
@@ -63,14 +99,15 @@ output "aws-iam-role-arn" {
 export AWS_DEFAULT_REGION="< pass region >"
 ```
 
-## 3. Execute Terraform script to get role arn
+## 3. Execute Terraform script
 
 ```sh
 $ terraform init
 $ terraform plan
 $ terraform apply
 ```
-
+## 4. After running above commands three files will be created in the the given directory. Go to that directory and again follow the step3.
+After step 4, roles and policies will be created in each account and will get the output of role arn and external id of each account.
 ## Notes:-
 
 - The user should have `Administrators` role permission to create resources.
@@ -78,4 +115,3 @@ $ terraform apply
   ```sh
     export AWS_PROFILE="< profile name >"
   ```
-- In file.tf file, specify CloudTrail S3 bucket name or Kinesis stream name. Kinesis stream based approach provides faster CloudTrail data ingestion
