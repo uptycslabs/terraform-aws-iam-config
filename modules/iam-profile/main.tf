@@ -53,7 +53,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
             "Effect": "Allow",
             "Action": [
               "apigateway:GET",
-              "codebuild:ListProjects"
+              "codebuild:ListProjects",
               "codecommit:GetCommit",
               "codecommit:GetRepository",
               "codecommit:GetBranch",
