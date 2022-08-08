@@ -53,15 +53,15 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
             "Effect": "Allow",
             "Action": [
               "apigateway:GET",
-	            "codebuild:ListProjects"
+              "codebuild:ListProjects"
               "codecommit:GetCommit",
               "codecommit:GetRepository",
               "codecommit:GetBranch",
               "codepipeline:ListTagsForResource",
               "codepipeline:GetPipeline",
               "ds:ListTagsForResource",
-	            "ec2:DescribeAccountAttributes",
-	            "ec2:GetEbsEncryptionByDefault",
+              "ec2:DescribeAccountAttributes",
+              "ec2:GetEbsEncryptionByDefault",
               "eks:ListNodegroups",
               "eks:DescribeFargateProfile",
               "eks:ListTagsForResource",
