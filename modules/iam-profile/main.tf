@@ -64,6 +64,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "ec2:DescribeAccountAttributes",
               "ec2:GetEbsEncryptionByDefault",
               "ec2:SearchTransitGatewayRoutes",
+              "ec2:GetTransitGatewayMulticastDomainAssociations",
               "eks:DescribeAddon",
               "eks:DescribeCluster",
               "eks:DescribeFargateProfile",
