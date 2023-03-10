@@ -1,7 +1,7 @@
 # Terraform AWS IAM role module
 
 This module creates the necessary AWS IAM role and its applicable permissions policies. It will return the IAM role ARN which will be manually entered in the Uptycs console as part of the service integration process.
-The following four permissions policies will be attached to this IAM role:
+The following policies will be attached to this IAM role:
 
 - AWS managed: arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
 - AWS managed: arn:aws:iam::aws:policy/SecurityAudit
@@ -9,14 +9,16 @@ The following four permissions policies will be attached to this IAM role:
 
   - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-ReadOnlyPolicy
   - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-cloudtrail-bucket-policy
+  - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-vpc-flowlog-bucket-policy
+  - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-kinesis-stream-policy
 
 &nbsp;
 # Prerequisites
 
-- The terraform version should be >= 0.12.31
+- Minimum required version of Terraform -> v0.12.31
 - The user must have `Git` installed on the system that they are using to execute the Terraform script.
   - Instructions on how to install Git here: https://github.com/git-guides/install-git
-- The user should have `Administrators` role to the acoount to create resources.
+- The user should have `Administrators` role in order to create resources.
 
 &nbsp;
 # Running the Terraform script
