@@ -104,4 +104,4 @@ $ terraform apply
 ```
 
 # Notes:-
-- In file.tf file, specify CloudTrail S3 bucket name or Kinesis stream name. Kinesis stream based approach provides faster CloudTrail data ingestion
+- In `main.tf` file, specify CloudTrail S3 bucket name or Kinesis stream name. Kinesis stream based approach provides faster CloudTrail data ingestion
