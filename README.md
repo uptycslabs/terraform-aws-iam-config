@@ -18,7 +18,8 @@ The following policies will be attached to this IAM role:
 - Minimum required version of Terraform -> v0.12.31
 - The user must have `Git` installed on the system that they are using to execute the Terraform script.
   - Instructions on how to install Git here: https://github.com/git-guides/install-git
-- The user should have `Administrators` role in order to create resources.
+- The IAM user or IAM role you use to execute the Terraform script should have the policy  `arn:aws:iam::aws:policy/AdministratorAccess` attached.
+
 
 &nbsp;
 # Running the Terraform script
