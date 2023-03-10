@@ -13,7 +13,7 @@ The following four permissions policies will be attached to this IAM role:
 &nbsp;
 # Prerequisites
 
-- The user must Install or update to v1.4.0 (latest version) of Terraform.
+- The terraform version should be >= 0.12.31
 - The user must have `Git` installed on the system that they are using to execute the Terraform script.
   - Instructions on how to install Git here: https://github.com/git-guides/install-git
 - The user should have `Administrators` role to the acoount to create resources.
