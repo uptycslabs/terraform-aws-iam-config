@@ -1,16 +1,16 @@
 # Terraform AWS IAM role module
 
-This module creates the necessary AWS IAM role and its applicable permissions policies. It will return the IAM role ARN which will be manually entered in the Uptycs console as part of the service integration process.
+This module creates the necessary AWS IAM role and its applicable permissions policies. It will return the IAM role ARN which has to be manually entered in the Uptycs console as part of the service integration process.
 The following policies will be attached to this IAM role:
 
 - AWS managed: arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
 - AWS managed: arn:aws:iam::aws:policy/SecurityAudit
 - Customer managed:
 
-  - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-ReadOnlyPolicy
-  - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-cloudtrail-bucket-policy
-  - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-vpc-flowlog-bucket-policy
-  - arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-kinesis-stream-policy
+  - `arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-ReadOnlyPolicy`
+  - `arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-cloudtrail-bucket-policy`
+  - `arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-vpc-flowlog-bucket-policy`
+  - `arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-kinesis-stream-policy`
 
 &nbsp;
 # Prerequisites
@@ -98,7 +98,7 @@ export AWS_PROFILE="< profile name >"
 export AWS_DEFAULT_REGION="<region-code>"
 ```
 &nbsp;
-# Execute Terraform script to get role arn
+# Execute Terraform script to get the role arn
 
 ```sh
 $ terraform init -upgrade
@@ -107,4 +107,4 @@ $ terraform apply
 ```
 
 # Notes:-
-- In `main.tf` file, specify CloudTrail S3 bucket name or Kinesis stream name. Kinesis stream based approach provides faster CloudTrail data ingestion
+- In `main.tf` file, specify the CloudTrail S3 bucket name or Kinesis stream name. Using a Kinesis stream will provide faster CloudTrail data ingestion.
