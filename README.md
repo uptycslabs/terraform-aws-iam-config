@@ -98,7 +98,7 @@ export AWS_PROFILE="< profile name >"
 export AWS_DEFAULT_REGION="<region-code>"
 ```
 &nbsp;
-# Execute Terraform script to get the role arn
+# Execute Terraform script to get the role ARN
 
 ```sh
 $ terraform init -upgrade
