@@ -4,7 +4,7 @@ variable "resource_prefix" {
   default     = "cloudquery"
 }
 
-variable "aws_account_id" {
+variable "upt_account_id" {
   description = "Aws account id of Uptycs"
   type        = string
 }
