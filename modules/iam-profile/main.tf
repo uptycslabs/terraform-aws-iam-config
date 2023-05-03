@@ -79,6 +79,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "eks:ListTagsForResource",
               "eks:ListUpdates",
               "elasticache:ListTagsForResource",
+              "elasticfilesystem:DescribeFileSystemPolicy",
               "es:ListTags",
               "glacier:DescribeJob",
               "glacier:DescribeVault",
