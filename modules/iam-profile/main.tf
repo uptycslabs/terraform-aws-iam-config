@@ -8,7 +8,7 @@ resource "aws_iam_role" "role" {
 	"Statement": [{
 		"Action": "sts:AssumeRole",
 		"Principal": {
-			"AWS": "${var.upt_account_id}"
+			"AWS": "${var.aws_account_id}"
 		},
 		"Condition": {
 			"StringEquals": {

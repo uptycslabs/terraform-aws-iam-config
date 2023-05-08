@@ -28,13 +28,13 @@ The following policies will be attached to this IAM role:
 - Create a file with name as `main.tf` and paste the code given below into it.
 
 ```
-module "iam-config" {
+ module "iam-config" {
   source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
   # Copy the Uptycs Account ID from Uptycs UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
-  upt_account_id = "Uptycs-ACCOUNT-ID"
+  aws_account_id = "Uptycs-ACCOUNT-ID"
 
   # Copy the UUID4 from Uptycs' UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
@@ -43,22 +43,24 @@ module "iam-config" {
 
   # CloudTrail source: S3 Bucket or Kinesis stream?
   # Set either `cloudtrail_s3_bucket_name` or `kinesis_stream_name` to allow Uptycs to ingest CloudTrail events
+  # Provide the resource's regions if these are diiferent from default region
   # Provide the S3 bucket name and region which contains the CloudTrail data
   cloudtrail_s3_bucket_name = ""
 
-  cloudtrail_s3_bucket_region = "us-east-1"
+  # The region where the cloudtrail bucket exists
+  cloudtrail_s3_bucket_region = ""
 
   # Name of the Kinesis stream configured to stream CloudTrail data
   kinesis_stream_name = ""
 
   # The region where the kinesis stream exists
-  kinesis_stream_region = "us-east-1"
+  kinesis_stream_region = ""
 
   # Name of the S3 bucket that contains the VPC flow logs
   vpc_flowlogs_bucket_name = ""
 
   # The region where the vpc flow log bucket exists
-  vpc_flowlogs_bucket_region = "us-east-1"
+  vpc_flowlogs_bucket_region = ""
 
   tags = {
     Service     = "cloudquery"
@@ -85,14 +87,14 @@ output "aws-iam-role-arn" {
 | Name                        | Description                                                           | Type     | Required | Default      |
 | :---------------------------- | ----------------------------------------------------------------------- | ---------- | ---------- | -------------- |
 | resource_prefix             | Prefix to be used for naming new resources                            | `string` |          | `cloudquery` |
-| upt_account_id              | Uptycs account ID. Copy the Uptycs Account ID from Uptycs UI          | `string` | Yes      |              |
+| aws_account_id              | Uptycs account ID. Copy the Uptycs Account ID from Uptycs UI          | `string` | Yes      |              |
 | external_id                 | Role external ID provided by Uptycs. Copy the UUID ID from Uptycs' UI | `string` | Yes      |              |
 | vpc_flowlogs_bucket_name    | Name of the S3 bucket that contains the VPC flow logs                 | `string` |          | Blank        |
-| vpc_flowlogs_bucket_region  | The region where the vpc flow logs bucket exists                      | `string` |          | `us-east-1`  |
+| vpc_flowlogs_bucket_region  | The region where the vpc flow logs bucket exists                      | `string` |          | Blank        |
 | cloudtrail_s3_bucket_name   | Name of the S3 bucket which contains the CloudTrail data              | `string` |          | Blank        |
-| cloudtrail_s3_bucket_region | The region where the vpc flow logs bucket exists                      | `string` |          | `us-east-1`  |
+| cloudtrail_s3_bucket_region | The region where the vpc flow logs bucket exists                      | `string` |          | Blank        |
 | kinesis_stream_name         | Name of the Kinesis stream configured to stream CloudTrail data       | `string` |          | Blank        |
-| kinesis_stream_region       | The region where the kinesis stream exists                            | `string` |          | `us-east-1`  |
+| kinesis_stream_region       | The region where the kinesis stream exists                            | `string` |          | Blank        |
 | tags                        | Tags to apply to the resources created by this module                 | `map`    |          | `{}`         |
 
 &nbsp;

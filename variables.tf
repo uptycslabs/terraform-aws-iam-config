@@ -4,7 +4,7 @@ variable "resource_prefix" {
   default     = "cloudquery"
 }
 
-variable "upt_account_id" {
+variable "aws_account_id" {
   description = "Uptycs AWS account ID"
   type        = string
 }
@@ -41,16 +41,16 @@ variable "tags" {
 variable "cloudtrail_s3_bucket_region" {
   type        = string
   description = "Region where cloudtrail bucket exists"
-  default     = "us-east-1"
+  default     = ""
 }
 
 variable "vpc_flowlogs_bucket_region" {
   type        = string
   description = "Region where vpc flow log bucket exists"
-  default     = "us-east-1"
+  default     = ""
 }
 variable "kinesis_stream_region" {
   description = "Region where the kinesis stream exists"
   type        = string
-  default     = "us-east-1"
+  default     = ""
 }
