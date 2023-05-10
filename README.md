@@ -13,6 +13,7 @@ The following policies will be attached to this IAM role:
   - `arn:aws:iam::<Customer-Account-ID>:policy/cloudquery-kinesis-stream-policy`
 
 &nbsp;
+
 # Prerequisites
 
 - Minimum required version of Terraform -> v0.12.31
@@ -20,20 +21,20 @@ The following policies will be attached to this IAM role:
   - Instructions on how to install Git here: https://github.com/git-guides/install-git
 - The IAM user or IAM role you use to execute the Terraform script should have the policy  `arn:aws:iam::aws:policy/AdministratorAccess` attached.
 
-
 &nbsp;
+
 # Running the Terraform script
 
 - Create a file with name as `main.tf` and paste the code given below into it.
 
 ```
-module "iam-config" {
+ module "iam-config" {
   source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
-  # Copy the AWS Account ID from Uptycs' UI
+  # Copy the Uptycs Account ID from Uptycs UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
-  aws_account_id = "Uptycs-AWS-ACCOUNT-ID"
+  aws_account_id = "Uptycs-ACCOUNT-ID"
 
   # Copy the UUID4 from Uptycs' UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
@@ -42,17 +43,24 @@ module "iam-config" {
 
   # CloudTrail source: S3 Bucket or Kinesis stream?
   # Set either `cloudtrail_s3_bucket_name` or `kinesis_stream_name` to allow Uptycs to ingest CloudTrail events
-  # Provide the S3 bucket name which contains the CloudTrail data
-  # CloudTrail S3 bucket must be in the same default region as where this Terraform file will be executed
+  # Provide the resource's regions if these are diiferent from default region
+  # Provide the S3 bucket name and region which contains the CloudTrail data
   cloudtrail_s3_bucket_name = ""
 
+  # The region where the cloudtrail bucket exists
+  cloudtrail_s3_bucket_region = ""
+
   # Name of the Kinesis stream configured to stream CloudTrail data
-  # Kinesis stream must be in the same default region as where this Terraform file will be executed
   kinesis_stream_name = ""
 
+  # The region where the kinesis stream exists
+  kinesis_stream_region = ""
+
   # Name of the S3 bucket that contains the VPC flow logs
-  # VPC Flow Logs S3 bucket must be in the same default region as where this Terraform file will be executed
   vpc_flowlogs_bucket_name = ""
+
+  # The region where the vpc flow log bucket exists
+  vpc_flowlogs_bucket_region = ""
 
   tags = {
     Service     = "cloudquery"
@@ -64,40 +72,51 @@ output "aws-iam-role-arn" {
   value = module.iam-config.aws_iam_role_arn
 }
 ```
+
 - Modify the ‘Input’ details as needed
 - Uptycs Account ID and External ID must be copied from the Uptycs UI.
-&nbsp;
+  &nbsp;
 
   ![](assets/uptycs-web.png)
 
 &nbsp;
+
 ## Inputs
 
-| Name                      | Description                                                           | Type     | Required | Default      |
-| --------------------------- | ----------------------------------------------------------------------- | ---------- | ---------- | -------------- |
-| resource_prefix           | Prefix to be used for naming new resources                            | `string` |          | `cloudquery` |
-| aws_account_id            | Uptycs AWS account ID. Copy the AWS Account ID from Uptycs' UI        | `string` | Yes      |              |
-| external_id               | Role external ID provided by Uptycs. Copy the UUID ID from Uptycs' UI | `string` | Yes      |              |
-| vpc_flowlogs_bucket_name  | Name of the S3 bucket that contains the VPC flow logs                 | `string` |          | Blank        |
-| cloudtrail_s3_bucket_name | Name of the S3 bucket which contains the CloudTrail data              | `string` |          | Blank        |
-| kinesis_stream_name       | Name of the Kinesis stream configured to stream CloudTrail data       | `string` |          | Blank        |
-| tags                      | Tags to apply to the resources created by this module                 | `map`    |          | `{}`         |
+
+| Name                        | Description                                                           | Type     | Required | Default      |
+| :---------------------------- | ----------------------------------------------------------------------- | ---------- | ---------- | -------------- |
+| resource_prefix             | Prefix to be used for naming new resources                            | `string` |          | `cloudquery` |
+| aws_account_id              | Uptycs account ID. Copy the Uptycs Account ID from Uptycs UI          | `string` | Yes      |              |
+| external_id                 | Role external ID provided by Uptycs. Copy the UUID ID from Uptycs' UI | `string` | Yes      |              |
+| vpc_flowlogs_bucket_name    | Name of the S3 bucket that contains the VPC flow logs                 | `string` |          | Blank        |
+| vpc_flowlogs_bucket_region  | The region where the vpc flow logs bucket exists                      | `string` |          | Blank        |
+| cloudtrail_s3_bucket_name   | Name of the S3 bucket which contains the CloudTrail data              | `string` |          | Blank        |
+| cloudtrail_s3_bucket_region | The region where the vpc flow logs bucket exists                      | `string` |          | Blank        |
+| kinesis_stream_name         | Name of the Kinesis stream configured to stream CloudTrail data       | `string` |          | Blank        |
+| kinesis_stream_region       | The region where the kinesis stream exists                            | `string` |          | Blank        |
+| tags                        | Tags to apply to the resources created by this module                 | `map`    |          | `{}`         |
 
 &nbsp;
+
 ## Outputs
+
 
 | Name             | Description      |
 | ------------------ | ------------------ |
 | aws_iam_role_arn | AWS IAM role ARN |
 
 &nbsp;
+
 # Set Region  and profile before execute terraform
 
 ```sh
 export AWS_PROFILE="< profile name >"
 export AWS_DEFAULT_REGION="<region-code>"
 ```
+
 &nbsp;
+
 # Execute Terraform script to get the role ARN
 
 ```sh
@@ -107,4 +126,5 @@ $ terraform apply
 ```
 
 # Notes:-
+
 - In `main.tf` file, specify the CloudTrail S3 bucket name or Kinesis stream name. Using a Kinesis stream will provide faster CloudTrail data ingestion.
