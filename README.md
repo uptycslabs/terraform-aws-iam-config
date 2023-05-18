@@ -31,11 +31,11 @@ module "iam-config" {
   source          = "github.com/uptycslabs/terraform-aws-iam-config"
   resource_prefix = "cloudquery"
 
-  # Copy the AWS Account ID from Uptycs' UI
+  # Copy the AWS Account ID from Uptycs UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
   aws_account_id = "Uptycs-AWS-ACCOUNT-ID"
 
-  # Copy the UUID4 from Uptycs' UI
+  # Copy the UUID4 from Uptycs UI
   # Uptycs' UI : "Cloud"->"AWS"->"Integrations"->"ACCOUNT INTEGRATION"
   
   external_id    = "ExternalId"
