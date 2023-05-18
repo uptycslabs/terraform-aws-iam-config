@@ -28,7 +28,8 @@ The following policies will be attached to this IAM role:
 
 ```
 module "iam-config" {
-  source          = "github.com/uptycslabs/terraform-aws-iam-config"
+  source          = "uptycslabs/iam-config/aws"
+  version         = "1.1.1"
   resource_prefix = "cloudquery"
 
   # Copy the AWS Account ID from Uptycs UI
