@@ -37,20 +37,3 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "cloudtrail_s3_bucket_region" {
-  type        = string
-  description = "Region where cloudtrail bucket exists"
-  default     = ""
-}
-
-variable "vpc_flowlogs_bucket_region" {
-  type        = string
-  description = "Region where vpc flow log bucket exists"
-  default     = ""
-}
-variable "kinesis_stream_region" {
-  description = "Region where the kinesis stream exists"
-  type        = string
-  default     = ""
-}
