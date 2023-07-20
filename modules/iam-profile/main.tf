@@ -85,7 +85,9 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "servicecatalog:DescribeServiceAction",
               "servicecatalog:SearchProductsAsAdmin",
               "sns:GetSubscriptionAttributes",
-              "ssm:ListCommandInvocations"
+              "ssm:ListCommandInvocations",
+              "ce:GetCostAndUsage",
+              "redshift-serverless:List*"
             ],
             "Resource": "*"
         }
