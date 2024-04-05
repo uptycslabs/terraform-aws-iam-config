@@ -68,7 +68,7 @@ output "aws-iam-role-arn" {
 - Uptycs Account ID and External ID must be copied from the Uptycs UI.
 &nbsp;
 
-  ![](assets/uptycs-web.png)
+  ![uptycs-web](./assets/uptycs-web.png)
 
 &nbsp;
 ## Inputs
