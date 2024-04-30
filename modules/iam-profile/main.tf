@@ -89,7 +89,12 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "ce:GetCostAndUsage",
               "redshift-serverless:List*",
               "lambda:GetCodeSigningConfig",
-	      "lambda:GetFunctionCodeSigningConfig"
+              "lambda:GetFunctionCodeSigningConfig",
+              "bedrock:List*",
+              "bedrock:Get*",
+              "aoss:List*",
+              "aoss:Get*",
+              "aoss:BatchGet*"
             ],
             "Resource": "*"
         }
