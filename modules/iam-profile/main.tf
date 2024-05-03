@@ -52,7 +52,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
         {
             "Effect": "Allow",
             "Action": [
-              "aoss:BatchGet*"
+              "aoss:BatchGet*",
               "aoss:Get*",
               "aoss:List*",
               "apigateway:GET",
@@ -94,7 +94,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "servicecatalog:DescribeServiceAction",
               "servicecatalog:SearchProductsAsAdmin",
               "sns:GetSubscriptionAttributes",
-              "ssm:ListCommandInvocations",
+              "ssm:ListCommandInvocations"
             ],
             "Resource": "*"
         }
