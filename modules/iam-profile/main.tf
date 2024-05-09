@@ -52,7 +52,13 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
         {
             "Effect": "Allow",
             "Action": [
+              "aoss:BatchGet*",
+              "aoss:Get*",
+              "aoss:List*",
               "apigateway:GET",
+              "bedrock:Get*",
+              "bedrock:List*",
+              "ce:GetCostAndUsage",
               "codecommit:GetCommit",
               "codepipeline:ListTagsForResource",
               "ds:ListTagsForResource",
@@ -75,9 +81,12 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "glacier:GetVaultNotifications",
               "glacier:ListJobs",
               "glacier:ListTagsForVault",
+              "lambda:GetCodeSigningConfig",
+              "lambda:GetFunctionCodeSigningConfig",
               "logs:FilterLogEvents",
               "ram:GetResourceShares",
               "ram:ListResources",
+              "redshift-serverless:List*",
               "s3:GetIntelligentTieringConfiguration",
               "servicecatalog:DescribePortfolio",
               "servicecatalog:DescribeProductAsAdmin",
@@ -85,11 +94,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "servicecatalog:DescribeServiceAction",
               "servicecatalog:SearchProductsAsAdmin",
               "sns:GetSubscriptionAttributes",
-              "ssm:ListCommandInvocations",
-              "ce:GetCostAndUsage",
-              "redshift-serverless:List*",
-              "lambda:GetCodeSigningConfig",
-	      "lambda:GetFunctionCodeSigningConfig"
+              "ssm:ListCommandInvocations"
             ],
             "Resource": "*"
         }
