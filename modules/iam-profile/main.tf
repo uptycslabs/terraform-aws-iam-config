@@ -99,7 +99,10 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "servicecatalog:DescribeServiceAction",
               "servicecatalog:SearchProductsAsAdmin",
               "sns:GetSubscriptionAttributes",
-              "ssm:ListCommandInvocations"
+              "ssm:ListCommandInvocations",
+              "ssm:ListCommandInvocations",
+              "sso:List*",
+              "sso:Describe*",
             ],
             "Resource": "*"
         }
