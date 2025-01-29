@@ -93,6 +93,7 @@ resource "aws_iam_policy" "ReadOnlyPolicy" {
               "ram:ListResources",
               "redshift-serverless:List*",
               "s3:GetIntelligentTieringConfiguration",
+              "s3:ListBucketVersions",
               "servicecatalog:DescribePortfolio",
               "servicecatalog:DescribeProductAsAdmin",
               "servicecatalog:DescribeProvisioningArtifact",
